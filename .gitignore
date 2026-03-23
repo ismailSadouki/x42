@@ -31,11 +31,11 @@ venv/
 # Outputs & experiments
 # =====================
 # Ignore intermediate experiment folders and models
-outputs/experiments/
-outputs/submissions/
-notebooks/oof_preds/
-notebooks/pretrianed/
-notebooks/outputs/
+outputs/experiments/*
+outputs/submissions/*
+notebooks/oof_preds/*
+notebooks/pretrianed/*
+notebooks/outputs/*
 src/__pycache__/
 
 # If you want to keep final submissions, manually add them to git
