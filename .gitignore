@@ -1,0 +1,86 @@
+# =====================
+# Python
+# =====================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# =====================
+# Jupyter
+# =====================
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+# =====================
+# Environment
+# =====================
+.env
+.venv/
+env/
+venv/
+.conda/
+*.egg-info/
+
+# =====================
+# Logs
+# =====================
+*.log
+
+# =====================
+# Outputs & experiments
+# =====================
+# Ignore intermediate experiment folders and models
+outputs/experiments/
+outputs/submissions/
+notebooks/oof_preds/
+notebooks/pretrianed/
+notebooks/outputs/
+src/__pycache__/
+
+# If you want to keep final submissions, manually add them to git
+# e.g., outputs/submission_ensamble.csv (you can force-add with git add -f)
+
+# =====================
+# Data / Large files
+# =====================
+# Ignore large datasets by default
+data/X_train.csv
+data/X_test.csv
+data/y_train.csv
+data/X_train_encoded.csv
+data/X_test_encoded.csv
+
+# Track small sample datasets manually if needed
+
+# Use Git LFS for large CSVs or model files:
+# git lfs track "*.csv"
+# git lfs track "outputs/models/*"
+# git lfs track "NN/*"
+
+# =====================
+# Models / Checkpoints / Pickles
+# =====================
+# Ignore Autogluon / CatBoost / experiments
+notebooks/AutogluonModels/
+notebooks/catboost_info/
+notebooks/models/
+outputs/
+*.npy
+*.csv    # optional, use Git LFS if needed
+*.zip
+*.h5
+*.pt
+*.ckpt
+*.pkl
+*.joblib
+
+# =====================
+# OS & IDE files
+# =====================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
