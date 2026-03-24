@@ -359,7 +359,7 @@ def generate_exp_name(model_name, best_score, params):
     key_params = "_".join(
         [f"{k}{v}" for k, v in params.items() if k in ["learning_rate", "max_depth"]]
     )
-    return f"exp_{ts}_{model_name}_CVScore{score_str}_{key_params}"
+    return f"{model_name}_CVScore{score_str}_exp_{ts}_{key_params}"
 
 
 def update_experiments_summary(base_dir, exp_name, metadata_file="metadata.json"):
