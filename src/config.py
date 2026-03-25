@@ -39,7 +39,7 @@ class BaseConfig:
     
 
 
-    TARGET = "NObeyesdad"
+    TARGET = "prognosis"
     ID = "id"
     SUBMIT_PROBABILITIES = False
     TARGET_MAPPER = {
@@ -59,12 +59,12 @@ class BaseConfig:
     TIMEOUT = 3600
     STARTUP_TRIALS = 30
 
-    KAGGLE_EVAL = "accuracy"
+    KAGGLE_EVAL = "mpa@3"
     USE_POSTPROCESSING = True
     # Model
     TASK = "multiclass" # multiclass/binary
-    METRIC = "accuracy" # auc/
-    MAXIMIZE_METRIC = False # minimize logloss False, True for auc
+    METRIC = "multi_logloss" # auc/accuracy
+    MAXIMIZE_METRIC = False # minimize logloss False, True for auc/MP@3
     IS_UNBALANCE = False
 
 
@@ -103,9 +103,9 @@ class BinaryLoglossConfig(BaseConfig):
 
 class MultiClassConfig(BaseConfig):
     OBJECTIVE = "multiclass"
-    METRIC = "accuracy" # multi_logloss
+    METRIC = "multi_logloss" # multi_logloss/accuracy
     LIB_PARAMS = {
-        "lightgbm": {"objective": "multiclass", "metric": "multi_logloss"}, # objective: multiclass → better global ranking | multiclassova → better rare class detection Or Train BOTH and Blend predictions
+        "lightgbm": {"objective": "multiclass", "metric": "multi_logloss"}, # metric:multi_logloss|| objective: multiclass → better global ranking | multiclassova → better rare class detection Or Train BOTH and Blend predictions
         "xgboost": {"objective": "multi:softprob", "eval_metric": "mlogloss"}, # there is also multi_output_tree u could try it latter
         "catboost": {"objective": "MultiClass", "eval_metric": "Accuracy"} # 👉 ⚠️ Change to: "eval_metric": "MultiClass" Or "eval_metric": "MultiClassLogloss"
     }

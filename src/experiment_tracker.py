@@ -10,6 +10,7 @@ import logging
 import numpy as np
 
 from src.config import Config
+from src.evaluation_utils import evaluate_metric, get_top_k_predictions
 from src.oof_manager import OOFManager
 
 import xgboost as xgb
@@ -128,20 +129,22 @@ class ExperimentTracker:
         task,
         oof_manager,
     ):
-        from src.postprocessing_utils import apply_postprocessing, evaluate_metric
+        from src.postprocessing_utils import apply_postprocessing
 
         kaggle_eval = postprocessing_params.get("kaggle_eval", "accuracy")
 
         # Apply PP
-        oof_pred_class_opt = apply_postprocessing(
-            oof_preds,
-            postprocessing_params["best_params"],
-            task=task,
-        )
-
+         
+#
         # Decide evaluation input
         if kaggle_eval in ["accuracy", "f1", "precision", "recall"]:
-            eval_input = oof_pred_class_opt
+            eval_input = apply_postprocessing(
+                oof_preds,
+                postprocessing_params["best_params"],
+                task=task,
+            )
+        elif kaggle_eval == "mpa@3":
+            eval_input = apply_postprocessing(oof_preds, postprocessing_params["best_params"], task=task, return_proba=True)
         else:
             eval_input = oof_preds
 
@@ -168,9 +171,19 @@ class ExperimentTracker:
 
         print(f"Saved post-processing params → {pp_file}")
 
+        # ===================================================
+        # Decide what to save for OOF
+        # ===================================================
+        oof_to_save = apply_postprocessing(
+            oof_preds,
+            postprocessing_params["best_params"],
+            task=task,
+            return_proba=True
+        )
+
         # Save OOF postprocessed
         oof_manager.save_oof(
-            oof_pred_class_opt,
+            oof_to_save,
             self.exp_name,
             dataset="oof_postprocessed",
         )
@@ -276,12 +289,21 @@ class ExperimentTracker:
             target_col = target_col or "Target"
 
 
+
+        KAGGLE_EVAL = postprocessing_params.get("kaggle_eval", "accuracy")
+        if KAGGLE_EVAL == "mpa@3":
+            y_test_pred = get_top_k_predictions(
+                y_test_pred,  # probabilities
+                k=3
+            )
+        else:
         # Convert 2D probabilities to labels if not submitting probabilities
-        if not submit_proba:
-            if task == "binary" and y_test_pred.ndim > 1:
-                y_test_pred = (y_test_pred[:, 1] >= 0.5).astype(int)
-            elif task == "multiclass" and y_test_pred.ndim > 1:
-                y_test_pred = np.argmax(y_test_pred, axis=1)
+            if not submit_proba:
+                if task == "binary" and y_test_pred.ndim > 1:
+                    y_test_pred = (y_test_pred[:, 1] >= 0.5).astype(int)
+                elif task == "multiclass" and y_test_pred.ndim > 1:
+                    y_test_pred = np.argmax(y_test_pred, axis=1)
+
 
         
         # ---------------- KAGGLE SUBMISSIONS ----------------
@@ -331,9 +353,30 @@ class ExperimentTracker:
             print("No predictions or test IDs provided. Skipping submission.")
             return None
         
-        # Convert numeric predictions to original string labels if mapping exists
-        if int_to_label is not None:
-            y_test_pred = [int_to_label[i] for i in y_test_pred]
+        y_test_pred = list(y_test_pred)
+
+        # --------------------------------------------------
+        # CASE 1: mAP@k → list of lists (top-k predictions)
+        # --------------------------------------------------
+        if isinstance(y_test_pred[0], (list, np.ndarray)):
+            formatted_preds = []
+
+            for row in y_test_pred:
+                if int_to_label is not None:
+                    row = [int_to_label[i] for i in row]
+                else:
+                    row = list(map(str, row))
+
+                formatted_preds.append(" ".join(row))
+
+            y_test_pred = formatted_preds
+
+        # --------------------------------------------------
+        # CASE 2: normal classification (single label)
+        # --------------------------------------------------
+        else:
+            if int_to_label is not None:
+                y_test_pred = [int_to_label[i] for i in y_test_pred]
 
         submission = pd.DataFrame({
             id_col: test_ids,

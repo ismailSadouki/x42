@@ -13,6 +13,8 @@ from sklearn.metrics import (
     matthews_corrcoef
 )
 
+from src.evaluation_utils import evaluate_metric, get_top_k_predictions
+
 # -------------------------------
 # Silence Optuna logs
 # -------------------------------
@@ -20,85 +22,7 @@ optuna.logging.set_verbosity(optuna.logging.CRITICAL)
 logging.getLogger("optuna").setLevel(logging.CRITICAL)
 
 
-# =========================================================
-# Metric handler (ROBUST + EXTENSIBLE)
-# =========================================================
-def evaluate_metric(y_true, y_input, task, kaggle_eval):
-    """
-    Smart evaluator:
-    - Accepts BOTH probabilities and class labels
-    - Automatically detects input type
-    """
 
-    y_true = np.ravel(y_true)
-    y_input = np.array(y_input)
-
-    # -------------------------------
-    # Detect if input is labels or probabilities
-    # -------------------------------
-    is_labels = False
-
-    if y_input.ndim == 1:
-        # If values are integers → labels
-        if np.issubdtype(y_input.dtype, np.integer):
-            is_labels = True
-        # If only few unique values → likely labels
-        elif len(np.unique(y_input)) < 20:
-            is_labels = True
-
-    # -------------------------------
-    # Build y_pred / y_proba
-    # -------------------------------
-    if is_labels:
-        y_pred = y_input
-
-        # We can't compute AUC/logloss without probabilities
-        y_proba = None
-
-    else:
-        # probabilities
-        if task == "binary":
-            if y_input.ndim > 1:
-                y_proba = y_input[:, 1]
-            else:
-                y_proba = y_input
-
-            y_pred = (y_proba >= 0.5).astype(int)
-
-        else:  # multiclass
-            y_proba = y_input
-            y_pred = np.argmax(y_proba, axis=1)
-
-    # -------------------------------
-    # Metrics
-    # -------------------------------
-    if kaggle_eval == "accuracy":
-        return accuracy_score(y_true, y_pred)
-
-    elif kaggle_eval == "f1":
-        return f1_score(y_true, y_pred, average="weighted")
-
-    elif kaggle_eval == "precision":
-        return precision_score(y_true, y_pred, average="weighted")
-
-    elif kaggle_eval == "recall":
-        return recall_score(y_true, y_pred, average="weighted")
-
-    elif kaggle_eval == "auc":
-        if y_proba is None:
-            raise ValueError("AUC requires probabilities, not class labels")
-        if task == "binary":
-            return roc_auc_score(y_true, y_proba)
-        else:
-            return roc_auc_score(y_true, y_proba, multi_class="ovr")
-
-    elif kaggle_eval == "logloss":
-        if y_proba is None:
-            raise ValueError("Logloss requires probabilities, not class labels")
-        return -log_loss(y_true, y_proba)
-
-    else:
-        raise ValueError(f"Unsupported metric: {kaggle_eval}")
 
 
 # =========================================================
@@ -217,7 +141,7 @@ def optimize_postprocessing(
 # =========================================================
 # Apply post-processing
 # =========================================================
-def apply_postprocessing(y_proba, params, task="multiclass"):
+def apply_postprocessing(y_proba, params, task="multiclass", return_proba=False):
     """
     Apply post-processing and return FINAL CLASS PREDICTIONS (1D).
     """
@@ -270,6 +194,14 @@ def apply_postprocessing(y_proba, params, task="multiclass"):
     # -------------------------------
     # Final predictions
     # -------------------------------
+
+    if return_proba:
+        return y_proba
+    if params.get("kaggle_eval", None) == "mpa@3":
+        return get_top_k_predictions(
+                y_proba,  # probabilities
+                k=3
+            )
     if task == "binary":
         proba = y_proba[:, 1] if y_proba.ndim > 1 else y_proba
         return (proba >= 0.5).astype(int)
