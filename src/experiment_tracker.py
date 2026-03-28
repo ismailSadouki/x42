@@ -8,13 +8,13 @@ import pandas as pd
 import datetime
 import logging
 import numpy as np
+from sklearn.ensemble import RandomForestClassifier
 
 from src.config import Config
 from src.evaluation_utils import evaluate_metric, get_top_k_predictions
 from src.oof_manager import OOFManager
 
 import xgboost as xgb
-
 
 
 
@@ -113,13 +113,31 @@ class ExperimentTracker:
     # Internal Helpers (CLEAN 🔥)
     # =====================================================
 
+
+
     def _predict_model(self, model, X, best_iter=None):
-        """Unified prediction for XGBoost / LightGBM"""
+        """Unified prediction for XGBoost / LightGBM / sklearn models"""
+
+        import xgboost as xgb
+        import lightgbm as lgb
+
+        # XGBoost Booster
         if isinstance(model, xgb.Booster):
             d = xgb.DMatrix(X)
             return model.predict(d, iteration_range=(0, best_iter)) if best_iter else model.predict(d)
-        else:
+
+        # LightGBM Booster
+        elif isinstance(model, lgb.Booster):
             return model.predict(X, num_iteration=best_iter)
+
+        # sklearn models (RandomForest, HistGB, etc.)
+        else:
+            # Prefer probabilities if available
+            if hasattr(model, "predict_proba"):
+                return model.predict_proba(X)
+            else:
+                return model.predict(X)
+            
 
     def _handle_postprocessing(
         self,
@@ -430,3 +448,82 @@ def update_experiments_summary(base_dir, exp_name, metadata_file="metadata.json"
 
     df.to_csv(summary_path, index=False)
     print(f"Updated experiments summary → {summary_path}")
+
+
+
+
+
+
+
+
+
+
+
+# =====================================================
+# Advanced Dynamic Experiment Loader
+# =====================================================
+
+def load_experiments(experiments_dir=None, load_models=False, load_preds=True):
+    """
+    Fully dynamic loader for experiments.
+
+    Args:
+        experiments_dir (str): Path to experiments folder.
+        load_models (bool): If True, loads model.pkl files (may be heavy).
+        load_preds (bool): If True, loads train/test/oof predictions (numpy arrays).
+
+    Returns:
+        experiments (list of dict): Each dict contains all experiment data.
+    """
+    experiments_dir = experiments_dir or Config.EXPERIMENTS_DIR
+
+    if not os.path.exists(experiments_dir):
+        raise FileNotFoundError(f"Experiments directory not found: {experiments_dir}")
+
+    experiments = []
+
+    for exp_name in sorted(os.listdir(experiments_dir)):
+        exp_path = os.path.join(experiments_dir, exp_name)
+        if not os.path.isdir(exp_path):
+            continue
+
+        exp_data = {"name": exp_name, "path": exp_path}
+
+        # ---------------- LOAD METRICS ----------------
+        metrics_file = os.path.join(exp_path, "metrics.json")
+        exp_data["metrics"] = json.load(open(metrics_file, "r")) if os.path.exists(metrics_file) else {}
+
+        # ---------------- LOAD PARAMETERS ----------------
+        params_file = os.path.join(exp_path, "params.json")
+        exp_data["params"] = json.load(open(params_file, "r")) if os.path.exists(params_file) else {}
+
+        # ---------------- LOAD METADATA ----------------
+        meta_file = os.path.join(exp_path, "metadata.json")
+        exp_data["metadata"] = json.load(open(meta_file, "r")) if os.path.exists(meta_file) else {}
+
+        # ---------------- LOAD PREDICTIONS ----------------
+        if load_preds:
+            for pred_type in ["train_preds.npy", "test_preds.npy", "oof_preds.npy", "oof_postprocessed_preds.npy"]:
+                pred_path = os.path.join(exp_path, pred_type)
+                if os.path.exists(pred_path):
+                    exp_data[pred_type.replace(".npy", "")] = np.load(pred_path)
+
+        # ---------------- LOAD MODEL ----------------
+        if load_models:
+            model_file = os.path.join(exp_path, "model.pkl")
+            if os.path.exists(model_file):
+                with open(model_file, "rb") as f:
+                    exp_data["model"] = pickle.load(f)
+
+        # ---------------- LOAD POSTPROCESSING ----------------
+        pp_dir = os.path.join(exp_path, "postprocessing")
+        if os.path.exists(pp_dir):
+            exp_data["postprocessing_files"] = [
+                os.path.join(pp_dir, f) for f in os.listdir(pp_dir) if f.endswith(".pkl")
+            ]
+
+        experiments.append(exp_data)
+
+    print(f"✅ Loaded {len(experiments)} experiments from {experiments_dir}")
+    return experiments
+

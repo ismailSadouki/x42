@@ -98,7 +98,9 @@ class BinaryLoglossConfig(BaseConfig):
     LIB_PARAMS = {
         "lightgbm": {"objective": "binary", "metric": "auc"},
         "xgboost": {"objective": "binary:logistic", "eval_metric": "logloss"},
-        "catboost": {"objective": "Logloss", "eval_metric": "Logloss"}
+        "catboost": {"objective": "Logloss", "eval_metric": "Logloss"},
+        "rf": {"objective": "binary", "metric": "oob"},
+        "histgb": {"objective": "binary", "metric": "log_loss"},
     }
 
 class MultiClassConfig(BaseConfig):
@@ -107,7 +109,11 @@ class MultiClassConfig(BaseConfig):
     LIB_PARAMS = {
         "lightgbm": {"objective": "multiclass", "metric": "multi_logloss"}, # metric:multi_logloss|| objective: multiclass → better global ranking | multiclassova → better rare class detection Or Train BOTH and Blend predictions
         "xgboost": {"objective": "multi:softprob", "eval_metric": "mlogloss"}, # there is also multi_output_tree u could try it latter
-        "catboost": {"objective": "MultiClass", "eval_metric": "Accuracy"} # 👉 ⚠️ Change to: "eval_metric": "MultiClass" Or "eval_metric": "MultiClassLogloss"
+        "catboost": {"objective": "multiclass", "eval_metric": "Accuracy"}, # 👉 ⚠️ Change to: "eval_metric": "MultiClass" Or "eval_metric": "MultiClassLogloss"
+        "rf": {"objective": "multiclass", "metric": "oob"},
+        "histgb": {"objective": "multiclass", "metric": "log_loss"},
+
+    
     }
 
 # 👉 post-processing matters more than training metric for accuaracy
