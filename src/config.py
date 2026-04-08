@@ -11,24 +11,6 @@ def find_project_root(marker_files=("train.csv", "sample_submission.csv", "src")
             raise FileNotFoundError(f"Could not find project root with marker files: {marker_files}")
         cwd = parent
 
-
-
-# Random seed
-SEED = 42
-N_FOLDS = 5
-
-# Paths
-DATA_DIR = "../data"
-TRAIN_PATH = f"{DATA_DIR}/train.csv"
-TEST_PATH = f"{DATA_DIR}/test.csv"
-SUB_PATH = f"{DATA_DIR}/sample_submission.csv"
-
-# Model defaults
-# EARLY_STOPPING = 200
-# N_ESTIMATORS = 5000
-
-
-
 # src/config.py
 class BaseConfig:
     PROJECT_ROOT = find_project_root()
@@ -68,13 +50,6 @@ class BaseConfig:
     IS_UNBALANCE = False
 
 
-    # Mapping to library-specific parameters
-    # binary and auc
-    # LIB_PARAMS = {
-    #     "lightgbm": {"objective": "binary", "metric": "auc"},
-    #     "xgboost": {"objective": "binary:logistic", "eval_metric": "auc"},
-    #     "catboost": {"objective": "Logloss", "eval_metric": "AUC"}
-    # }
 
 
     # seeds

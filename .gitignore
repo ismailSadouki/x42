@@ -57,6 +57,9 @@ src/__pycache__/
 # Ignore raw datasets by default
 data/**/*
 !data/.gitkeep
+
+# ignore pretrained Models
+nlp/*.txt
 # Track small sample datasets manually if needed
 
 # =====================
