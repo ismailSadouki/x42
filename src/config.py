@@ -20,8 +20,8 @@ class BaseConfig:
     
     
 
-
-    TARGET = "Target"
+    
+    TARGET = "score"
     ID = "id"
     SUBMIT_PROBABILITIES = False
     TARGET_MAPPER = {
@@ -41,10 +41,10 @@ class BaseConfig:
     TIMEOUT = 3600
     STARTUP_TRIALS = 30
 
-    KAGGLE_EVAL = "accuracy" # mpa@3/accuracy
+    KAGGLE_EVAL = "rmse" # mpa@3/accuracy
     USE_POSTPROCESSING = True
     # Model
-    TASK = "multiclass" # multiclass/binary
+    TASK = "regression" # multiclass/binary/regression
     METRIC = "accuracy" # auc/accuracy/multi_logloss
     MAXIMIZE_METRIC = False # minimize logloss False, True for auc/MP@3
     IS_UNBALANCE = False
@@ -89,6 +89,33 @@ class MultiClassConfig(BaseConfig):
         "histgb": {"objective": "multiclass", "metric": "log_loss"},
 
     
+    }
+
+class RegressionConfig(BaseConfig):
+    OBJECTIVE = "regression"
+    METRIC = "rmse"  # or "mae" depending on competition
+    
+    LIB_PARAMS = {
+        "lightgbm": {
+            "objective": "regression", # or "huber" for robust regression, "quantile" for quantile regression, "tweedie" for insurance claims, "poisson" for count data, "gamma" for positive skewed data, "fair" for fair regression
+            "metric": "rmse"   # or "mae"
+        },
+        "xgboost": {
+            "objective": "reg:squarederror", # or "reg:absoluteerror" for MAE, "reg:gamma" for gamma regression, "reg:tweedie" for tweedie regression, "reg:pseudohubererror" for robust regression, 
+            "eval_metric": "rmse"  # or "mae"
+        },
+        "catboost": {
+            "objective": "RMSE",   # or "MAE", "Quantile:alpha=0.5" for quantile regression, "Poisson" for count data, "Gamma" for positive skewed data, "LogLinQuantile:alpha=0.5" for log-quantile regression, "Huber:delta=1.0" for robust regression
+            "eval_metric": "RMSE"
+        },
+        "rf": {
+            "objective": "regression", # Random Forest in sklearn doesn't have a specific regression objective, but we can set it to "regression" for clarity
+            "metric": "mse"  # RF usually uses MSE internally
+        },
+        "histgb": {
+            "objective": "squared_error",  # sklearn HistGradientBoosting, "squared_error" for RMSE, "absolute_error" for MAE, "poisson" for count data, "quantile" for quantile regression
+            "metric": "mse"
+        },
     }
 
 # 👉 post-processing matters more than training metric for accuaracy
@@ -138,7 +165,7 @@ class XGBConfig(BaseConfig):
     N_ESTIMATORS = 1000
 
 ## ACTIVE CONFIG
-class Config(MultiClassConfig, FullTraining):
+class Config(RegressionConfig, FullTraining):
     pass
 
 

@@ -1,6 +1,7 @@
 ./train.csv
 ./test.csv
 ./sample_submission.csv
+*.csv
 # =====================
 # Python
 # =====================
@@ -60,6 +61,9 @@ data/**/*
 
 # ignore pretrained Models
 nlp/*.txt
+nlp/*.npz
+nlp/data/*.csv
+nlp/*.csv
 # Track small sample datasets manually if needed
 
 # =====================

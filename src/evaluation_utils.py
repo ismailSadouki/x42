@@ -1,6 +1,6 @@
 
 
-from sklearn.metrics import f1_score, precision_score, recall_score, roc_auc_score, log_loss, accuracy_score
+from sklearn.metrics import f1_score, mean_squared_error, precision_score, recall_score, roc_auc_score, log_loss, accuracy_score
 import pandas as pd
 import numpy as np
 
@@ -42,6 +42,20 @@ def evaluate_metric(y_true, y_input, task, kaggle_eval):
     y_true = np.ravel(y_true)
     y_input = np.array(y_input)
 
+
+    # -------------------------------
+    # 1. Handle Regression Directly (New)
+    # -------------------------------
+    if task == "regression":
+        if kaggle_eval == "rmse":
+            return np.sqrt(mean_squared_error(y_true, y_input))
+        elif kaggle_eval == "mae":
+            return np.mean(np.abs(y_true - y_input))
+        elif kaggle_eval == "mse":
+            return mean_squared_error(y_true, y_input)
+        else:
+            raise ValueError(f"Unsupported regression metric: {kaggle_eval}")
+
     # -------------------------------
     # Detect if input is labels or probabilities
     # -------------------------------
@@ -78,9 +92,10 @@ def evaluate_metric(y_true, y_input, task, kaggle_eval):
             y_proba = y_input
             y_pred = np.argmax(y_proba, axis=1)
 
+
     # -------------------------------
-    # Metrics
-    # -------------------------------
+# Metrics (Classification)
+#     # -------------------------------
     if kaggle_eval == "accuracy":
         return accuracy_score(y_true, y_pred)
 

@@ -232,7 +232,8 @@ class ExperimentTracker:
         target_col=None,
         sample_submission_path=None,
         submit_proba=False,
-        int_to_label=None
+        int_to_label=None,
+        inverse_log_transform_for_predictions=False,
     ):
         """
         Full experiment pipeline.
@@ -269,6 +270,10 @@ class ExperimentTracker:
 
         oof_manager.save_oof(y_train_pred, self.exp_name, dataset="train")
         oof_manager.save_oof(y_test_pred, self.exp_name, dataset="test")
+        
+        # inverse log transform if regression
+        if task == "regression" and inverse_log_transform_for_predictions:
+            y_test_pred = np.expm1(y_test_pred) 
 
         if oof_preds is not None:
             oof_manager.save_oof(oof_preds, self.exp_name, dataset="oof")
@@ -336,8 +341,9 @@ class ExperimentTracker:
                 target_col=target_col,
                 filename_prefix="submission_raw"
             )
+
             # Post-processed predictions
-            if y_test_postprocessed is not None:
+            if use_postprocessing and y_test_postprocessed is not None:
                 self.save_submission(
                     test_ids=test_ids,
                     y_test_pred=y_test_postprocessed,
