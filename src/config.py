@@ -21,9 +21,9 @@ class BaseConfig:
     
 
     
-    TARGET = "score"
+    TARGET = "target"
     ID = "id"
-    SUBMIT_PROBABILITIES = False
+    SUBMIT_PROBABILITIES = True
     TARGET_MAPPER = {
         'A' : 0,
         'B' : 1,
@@ -41,13 +41,13 @@ class BaseConfig:
     TIMEOUT = 3600
     STARTUP_TRIALS = 30
 
-    KAGGLE_EVAL = "rmse" # mpa@3/accuracy
-    USE_POSTPROCESSING = True
+    KAGGLE_EVAL = "auc" # mpa@3/accuracy
+    USE_POSTPROCESSING = False
     # Model
-    TASK = "regression" # multiclass/binary/regression
-    METRIC = "accuracy" # auc/accuracy/multi_logloss
-    MAXIMIZE_METRIC = False # minimize logloss False, True for auc/MP@3
-    IS_UNBALANCE = False
+    TASK = "binary" # multiclass/binary/regression
+    METRIC = "auc" # auc/accuracy/multi_logloss
+    MAXIMIZE_METRIC = True # minimize logloss False, True for auc/MP@3
+    IS_UNBALANCE = True
 
 
 
@@ -73,7 +73,7 @@ class BinaryLoglossConfig(BaseConfig):
     LIB_PARAMS = {
         "lightgbm": {"objective": "binary", "metric": "auc"},
         "xgboost": {"objective": "binary:logistic", "eval_metric": "logloss"},
-        "catboost": {"objective": "Logloss", "eval_metric": "Logloss"},
+        "catboost": {"loss_function": "Logloss", "eval_metric": "AUC"},
         "rf": {"objective": "binary", "metric": "oob"},
         "histgb": {"objective": "binary", "metric": "log_loss"},
     }
@@ -165,7 +165,7 @@ class XGBConfig(BaseConfig):
     N_ESTIMATORS = 1000
 
 ## ACTIVE CONFIG
-class Config(RegressionConfig, FullTraining):
+class Config(BinaryLoglossConfig, FullTraining):
     pass
 
 
