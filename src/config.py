@@ -22,7 +22,7 @@ class BaseConfig:
 
     
     TARGET = "target"
-    ID = "id"
+    ID = "ID"
     SUBMIT_PROBABILITIES = True
     TARGET_MAPPER = {
         'A' : 0,

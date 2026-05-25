@@ -41,7 +41,7 @@ def run_optuna(objective, cfg, n_trials=None, use_median_pruner=False, warmup_st
         pruner=pruner
     )
     
-    study.optimize(objective, n_trials=n_trials or cfg.N_TRIALS,timeout=getattr(cfg, "TIMEOUT", None), show_progress_bar=True)
+    study.optimize(objective, n_trials=n_trials or cfg.N_TRIALS,timeout=None, show_progress_bar=True)
     
     end = time.time()
 

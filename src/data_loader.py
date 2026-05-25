@@ -22,6 +22,11 @@ def load_data(version="encoded", data_dir=None):
         "fe": {
             "X_train": "X_train_fe.csv",
             "X_test": "X_test_fe.csv",
+        },
+
+        "prep": {
+            "X_train": "X_train_prep.csv",
+            "X_test": "X_test_prep.csv",
         }
 
     }
