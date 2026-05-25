@@ -40,6 +40,8 @@ outputs/**/*
 !outputs/experiments/.gitkeep
 !outputs/submissions/.gitkeep
 
+!outputs/experiments/**
+
 notebooks/oof_preds/**/*
 !notebooks/oof_preds/.gitkeep
 
