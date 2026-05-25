@@ -14,7 +14,7 @@ All Models are saved with thier respective parameters&OOf predictions in the fol
 
 **Dim Reduction:**
 
-- [./data_reduction.ipynb](https://github.com/ismailSadouki/x42/blob/main/data_reduction.ipynb)
+- [./dim_reduction.ipynb](https://github.com/ismailSadouki/x42/blob/main/dim_reduction.ipynb)
 
 **Clustering:**
 
