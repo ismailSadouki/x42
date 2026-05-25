@@ -1,0 +1,14 @@
+{
+    "learning_rate": 0.04429975427076118,
+    "max_depth": 6,
+    "min_child_weight": 0.3382387201936217,
+    "subsample": 0.8167648553804474,
+    "colsample_bytree": 0.7678873420373793,
+    "gamma": 0.04514488502720415,
+    "reg_alpha": 0.3293991394919696,
+    "reg_lambda": 7.709400093120135e-06,
+    "imbalance_strategy": "none",
+    "objective": "binary:logistic",
+    "eval_metric": "logloss",
+    "verbosity": 0
+}

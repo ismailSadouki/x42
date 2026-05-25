@@ -1,0 +1,25 @@
+{
+    "model_name": "lgbm_moo_pauc",
+    "cv_score": 0.6173019592071375,
+    "best_iteration": 0,
+    "params": {
+        "max_depth": 3,
+        "num_leaves": 8,
+        "learning_rate": 0.006432732351014514,
+        "min_child_samples": 72,
+        "reg_alpha": 4.517176470477944e-08,
+        "reg_lambda": 0.2493104792821937,
+        "subsample": 0.8531211135782482,
+        "colsample_bytree": 0.5406743903209499,
+        "min_split_gain": 0.04241885704259596,
+        "objective": "binary",
+        "metric": "custom",
+        "boosting_type": "gbdt",
+        "verbosity": -1,
+        "seed": 42
+    },
+    "train_time_seconds": 9.127103090286255,
+    "num_samples": 80024,
+    "num_features": 267,
+    "timestamp": "2026-05-22 11:08:18"
+}

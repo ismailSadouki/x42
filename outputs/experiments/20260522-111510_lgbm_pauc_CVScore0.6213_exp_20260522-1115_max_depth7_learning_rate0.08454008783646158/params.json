@@ -1,0 +1,16 @@
+{
+    "max_depth": 7,
+    "num_leaves": 123,
+    "learning_rate": 0.08454008783646158,
+    "min_child_samples": 64,
+    "reg_alpha": 6.688222795212413e-08,
+    "reg_lambda": 0.022213834091532214,
+    "subsample": 0.6346189305327061,
+    "colsample_bytree": 0.6294898662234043,
+    "min_split_gain": 0.4266258806775065,
+    "objective": "binary",
+    "metric": "custom",
+    "boosting_type": "gbdt",
+    "verbosity": -1,
+    "seed": 42
+}

@@ -1,0 +1,19 @@
+{
+    "learning_rate": 0.013811069802888794,
+    "max_depth": 7,
+    "num_leaves": 52,
+    "min_child_samples": 39,
+    "subsample": 0.7261629083366872,
+    "colsample_bytree": 0.7021005048895937,
+    "reg_alpha": 1.9492360950667897,
+    "reg_lambda": 3.662075691224159e-05,
+    "min_split_gain": 0.19804465203602278,
+    "objective": "binary",
+    "metric": "custom",
+    "boosting_type": "gbdt",
+    "verbosity": -1,
+    "seed": 42,
+    "feature_fraction_seed": 42,
+    "bagging_seed": 42,
+    "data_random_seed": 42
+}

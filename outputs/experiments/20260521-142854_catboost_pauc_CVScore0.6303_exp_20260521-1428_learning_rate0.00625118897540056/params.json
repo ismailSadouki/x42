@@ -1,0 +1,20 @@
+{
+    "depth": 7,
+    "learning_rate": 0.00625118897540056,
+    "l2_leaf_reg": 9.413993046829944,
+    "random_strength": 0.05277736371601199,
+    "bagging_temperature": 0.1987156815341724,
+    "border_count": 33,
+    "min_data_in_leaf": 82,
+    "loss_function": "Logloss",
+    "iterations": 3733,
+    "verbose": false,
+    "allow_writing_files": false,
+    "task_type": "CPU",
+    "random_seed": 42,
+    "bootstrap_type": "MVS",
+    "class_weights": [
+        2.68718919795182,
+        1.0
+    ]
+}

@@ -1,0 +1,28 @@
+{
+    "model_name": "lgbm_hyperopt_pauc",
+    "cv_score": 0.6225775031726279,
+    "best_iteration": 0,
+    "params": {
+        "objective": "binary",
+        "metric": "custom",
+        "boosting_type": "gbdt",
+        "verbosity": -1,
+        "learning_rate": 0.005153637968987661,
+        "num_leaves": 128,
+        "max_depth": 7,
+        "min_child_samples": 10,
+        "reg_alpha": 2.8436672847262366e-06,
+        "reg_lambda": 0.0004985357886061702,
+        "subsample": 0.9724430373063899,
+        "colsample_bytree": 0.5016832613560389,
+        "min_split_gain": 0.001191625702582605,
+        "seed": 42,
+        "feature_fraction_seed": 42,
+        "bagging_seed": 42,
+        "data_random_seed": 42
+    },
+    "train_time_seconds": 19.491560459136963,
+    "num_samples": 80024,
+    "num_features": 267,
+    "timestamp": "2026-05-20 21:34:24"
+}

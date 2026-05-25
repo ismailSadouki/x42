@@ -1,0 +1,25 @@
+{
+    "model_name": "xgb_pauc",
+    "cv_score": 0.6219552720576844,
+    "best_iteration": null,
+    "params": {
+        "learning_rate": 0.008307783145761518,
+        "max_depth": 8,
+        "min_child_weight": 5.554169083020913,
+        "subsample": 0.8480148983374864,
+        "colsample_bytree": 0.7850305850446825,
+        "gamma": 0.04858824688538427,
+        "reg_alpha": 0.0034281912357116743,
+        "reg_lambda": 8.137381007150568,
+        "objective": "binary:logistic",
+        "booster": "gbtree",
+        "tree_method": "hist",
+        "verbosity": 0,
+        "nthread": -1,
+        "seed": 42
+    },
+    "train_time_seconds": 1.4066696166992188e-05,
+    "num_samples": 80024,
+    "num_features": 267,
+    "timestamp": "2026-05-19 13:54:57"
+}

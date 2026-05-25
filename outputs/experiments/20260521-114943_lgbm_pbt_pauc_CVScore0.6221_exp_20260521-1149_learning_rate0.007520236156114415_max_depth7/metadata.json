@@ -1,0 +1,25 @@
+{
+    "model_name": "lgbm_pbt_pauc",
+    "cv_score": 0.6220835180272879,
+    "best_iteration": 0,
+    "params": {
+        "learning_rate": 0.007520236156114415,
+        "max_depth": 7,
+        "num_leaves": 128,
+        "min_child_samples": 62,
+        "subsample": 0.5286266055917704,
+        "colsample_bytree": 0.5,
+        "reg_alpha": 3.3323645788192616e-08,
+        "reg_lambda": 0.01231704193854233,
+        "min_split_gain": 0.3609913470513375,
+        "objective": "binary",
+        "metric": "custom",
+        "boosting_type": "gbdt",
+        "verbosity": -1,
+        "seed": 42
+    },
+    "train_time_seconds": 15.772841930389404,
+    "num_samples": 80024,
+    "num_features": 267,
+    "timestamp": "2026-05-21 11:49:43"
+}

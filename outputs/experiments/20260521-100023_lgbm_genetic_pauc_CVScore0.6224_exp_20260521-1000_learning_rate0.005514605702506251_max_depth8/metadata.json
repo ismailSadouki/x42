@@ -1,0 +1,28 @@
+{
+    "model_name": "lgbm_genetic_pauc",
+    "cv_score": 0.6223921276238348,
+    "best_iteration": 0,
+    "params": {
+        "objective": "binary",
+        "metric": "custom",
+        "boosting_type": "gbdt",
+        "verbosity": -1,
+        "learning_rate": 0.005514605702506251,
+        "num_leaves": 85,
+        "max_depth": 8,
+        "min_child_samples": 15,
+        "reg_alpha": 0.1213980210731726,
+        "reg_lambda": 0.00052821153945323,
+        "subsample": 0.6150824887727968,
+        "colsample_bytree": 0.5917022549267169,
+        "min_split_gain": 0.21297612191255277,
+        "seed": 42,
+        "feature_fraction_seed": 42,
+        "bagging_seed": 42,
+        "data_random_seed": 42
+    },
+    "train_time_seconds": 26.74971890449524,
+    "num_samples": 80024,
+    "num_features": 267,
+    "timestamp": "2026-05-21 10:00:23"
+}
