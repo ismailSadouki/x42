@@ -12,7 +12,7 @@
 
 All Models are saved with thier respective parameters&OOf predictions in the folder [outputs/experiments](https://github.com/ismailSadouki/x42/tree/main/outputs/experiments)
 
-**Data Reduction:**
+**Dim Reduction:**
 
 - [./data_reduction.ipynb](https://github.com/ismailSadouki/x42/blob/main/data_reduction.ipynb)
 
