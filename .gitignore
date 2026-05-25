@@ -41,6 +41,7 @@ outputs/**/*
 !outputs/submissions/.gitkeep
 
 !outputs/experiments/**
+!sample_data.csv
 
 notebooks/oof_preds/**/*
 !notebooks/oof_preds/.gitkeep

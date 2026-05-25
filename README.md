@@ -1,6 +1,40 @@
-# x42 | ML Competition Pipeline
 
-This repository contains a modular workflow for end-to-end machine learning competitions, from initial data ingestion to advanced ensemble modeling.
+
+# Exam Project Files: (In Order)
+
+**supervised learning:** 
+
+- [models/Feature engineering.ipynb](https://github.com/ismailSadouki/x42/blob/main/models/feature_engineering.ipynb): data preprocessing and feature engineering, along with data splitting and the creation of folds to be used later for modeling and stacking.
+- [models/lgbm_optuna.ipynb](https://github.com/ismailSadouki/x42/blob/main/models/lgbm_optuna.ipynb): LGBM with optuna + many different optimazation methods + Error Analysis
+- [models/catboost.ipynb](https://github.com/ismailSadouki/x42/blob/main/models/catboost.ipynb): Catboost + Error Analysis
+- [models/xgboost_optuna.ipynb](https://github.com/ismailSadouki/x42/blob/main/models/xgboost_obtuna.ipynb) / [models/linear_models.ipynb](https://github.com/ismailSadouki/x42/blob/main/models/linear_models.ipynb) and  Many other Models.
+- [models/ensamble.ipynb](https://github.com/ismailSadouki/x42/blob/main/models/ensamble.ipynb)
+
+All Models are saved with thier respective parameters&OOf predictions in the folder [outputs/experiments](https://github.com/ismailSadouki/x42/tree/main/outputs/experiments)
+
+**Data Reduction:**
+
+- [./data_reduction.ipynb](https://github.com/ismailSadouki/x42/blob/main/data_reduction.ipynb)
+
+**Clustering:**
+
+- [./clustering.ipynb](https://github.com/ismailSadouki/x42/blob/main/clustering.ipynb)
+
+
+**RL:**
+
+- [./rl.ipynb](https://github.com/ismailSadouki/x42/blob/main/rl.ipynb)
+
+---
+
+---
+
+---
+
+
+# x42 | ML Pipeline
+
+This repository contains a modular workflow for end-to-end machine learning, from initial data ingestion to advanced ensemble modeling.
 
 ---
 
